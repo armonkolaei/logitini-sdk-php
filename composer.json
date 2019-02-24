@@ -1,0 +1,24 @@
+{
+    "name": "logitini/api",
+    "description": "PHP SDK - Logitni API Services",
+    "keywords": ["Logitini", "PHP", "SDK"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Armon Kolaei",
+            "email": "kolaeiventures@gmail.com"
+        }
+    ],
+    "type": "project",
+    "require": {
+		"php": ">=5.0"
+    },
+    "require-dev": {
+		"phpunit/phpunit": "5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Logitini\\": "src/"
+        }
+    }
+}
