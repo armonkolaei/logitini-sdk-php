@@ -15,7 +15,7 @@ Then go ahead and create your first applciation. Fill out the form and let Logit
 
 The Log types/dashboards are:
 - [File Log](#file-log)
-- [Open/HTTP Log](#open-log)
+- [Open/HTTP Log](#open-http-log)
 - [Document History](#document-history)
 - [Audit Trail](#audit-trail)
 
