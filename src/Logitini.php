@@ -1,6 +1,5 @@
 <?php namespace Logitini;
 
-
 /**
  * Logitini API services
  * This is the main class for API integration into Logitini.com
@@ -9,19 +8,21 @@
  * Version 1.0.0
  *
  *  @author Armon Kolaei
-*/
+ */
 class Logitini {
 
     protected $domain = "https://api.logitini.com/";
     protected $app_key = "";
     protected $app_secret = "";
 
-	function __construct($appKey, $appSecret, $domain = "") {
-        if ($domain != "") {
-            $this->$domain = $domain;
+    function __construct($appKey, $appSecret, $env = "prod") {
+        switch ($env) {
+            case 'dev':
+                $this->domain = "https://apidev.logitini.com/";
+                break;
         }
-        $this->logitini_app_key = $appKey;
-        $this->logitini_app_secret = $appSecret;
+        $this->app_key = $appKey;
+        $this->app_secret = $appSecret;
     }
 
     /**
@@ -66,9 +67,16 @@ class Logitini {
 
             // close the connection, release resources used
             $server_output = curl_exec($ch);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
             curl_close($ch);
 
+            if ($httpcode == 200) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         catch (\Exception $e) {
             return false;
@@ -153,9 +161,16 @@ class Logitini {
 
             // close the connection, release resources used
             $server_output = curl_exec($ch);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
             curl_close($ch);
 
+            if ($httpcode == 200) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         catch (\Exception $e) {
             return false;
@@ -218,8 +233,16 @@ class Logitini {
 
             // close the connection, release resources used
             $server_output = curl_exec($ch);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
             curl_close($ch);
+
+            if ($httpcode == 200) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         catch (\Exception $e) {
             return false;
