@@ -15,7 +15,7 @@ Then go ahead and create your first applciation. Fill out the form and let Logit
 
 The Log types/dashboards are:
 - [File Log](#file-log)
-- [Open/HTTP Log](#open-http-log)
+- [Open/HTTP Log](#http-log)
 - [Document History](#document-history)
 - [Audit Trail](#audit-trail)
 
@@ -25,7 +25,7 @@ The Log types/dashboards are:
 You may simply cretae a file log applciation and go to the tab calld Ship Log.
 Fill out the infromation and you are simply done.
 
-## Open/HTTP Log
+## HTTP Log
 
 - Open Log/HTTP Log are very simple. You can log any array/json data with one line and Logitini will store it on their secure sever for the given application retention.
 
