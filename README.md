@@ -1,4 +1,4 @@
-# logitini-sdk-php
+# Logitini-SDK-PHP
 
 Logitini is your central secure place to log all event types! (https://www.logitini.com).
 
