@@ -1,5 +1,5 @@
 {
-    "name": "logitini/api",
+    "name": "logitini/sdk-php",
     "description": "PHP SDK - Logitni API Services",
     "keywords": ["Logitini", "PHP", "SDK"],
     "license": "MIT",
