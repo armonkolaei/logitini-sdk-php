@@ -1,6 +1,6 @@
 # Logitini-SDK-PHP
 
-Logitini is your central secure place to log all event types! (https://www.logitini.com).
+Logitini is your central secure place to log all event types! (https://logitini.com).
 
 - [Getting Started](#getting-started)
 - [Questions? Problems? Suggestions?](#questions-problems-suggestions)
@@ -14,10 +14,10 @@ Project's are just away to organize your applciations. For example it can be "lo
 Then go ahead and create your first applciation. Fill out the form and let Logitini know what type of logging will be this application.
 
 The Log types/dashboards are:
-- [File Log](#fileLog)
-- [Open/HTTP Log](#openLog)
-- [Document History](#documentHistory)
-- [Audit Trail](#auditTrail)
+- [File Log](#file-log)
+- [Open/HTTP Log](#open-log)
+- [Document History](#document-history)
+- [Audit Trail](#audit-trail)
 
 ## File Log
 
