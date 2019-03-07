@@ -116,7 +116,7 @@ class Logitini {
 
             curl_close($ch);
 
-            return $server_output;
+            return json_decode($server_output);
         }
         catch (\Exception $e) {
             return false;
