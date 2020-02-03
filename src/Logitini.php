@@ -1,4 +1,6 @@
-<?php namespace Logitini;
+<?php
+
+namespace Logitini;
 
 /**
  * Logitini API services
@@ -9,13 +11,15 @@
  *
  *  @author Armon Kolaei
  */
-class Logitini {
+class Logitini
+{
 
     protected $domain = "https://api.logitini.com/";
     protected $app_key = "";
     protected $app_secret = "";
 
-    function __construct($appKey, $appSecret, $env = "prod") {
+    function __construct($appKey, $appSecret, $env = "prod")
+    {
         switch ($env) {
             case 'dev':
                 $this->domain = "https://apidev.logitini.com/";
@@ -34,7 +38,8 @@ class Logitini {
      * @param $data
      * @return bool
      */
-    public function recordDocHistory($currentUser, $type, $id, $data) {
+    public function recordDocHistory($currentUser, $type, $id, $data)
+    {
         try {
             //prepare extra data
             $userInfo = array(
@@ -73,12 +78,10 @@ class Logitini {
 
             if ($httpcode == 200) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -90,7 +93,8 @@ class Logitini {
      * @param $id
      * @return bool|mixed
      */
-    public function getDocHistory($type, $id) {
+    public function getDocHistory($type, $id)
+    {
         try {
             $url = "document/v1/by_id?";
 
@@ -117,8 +121,7 @@ class Logitini {
             curl_close($ch);
 
             return json_decode($server_output);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -130,7 +133,8 @@ class Logitini {
      * @param $data
      * @return bool
      */
-    public function recordOpenLog($currentUser = array(), $data) {
+    public function recordOpenLog($currentUser = array(), $data)
+    {
         try {
             //prepare extra data
             $userInfo = array(
@@ -167,12 +171,10 @@ class Logitini {
 
             if ($httpcode == 200) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -184,7 +186,8 @@ class Logitini {
      * @param $data
      * @return bool
      */
-    public function recordAuditTrail($currentUser, $data) {
+    public function recordAuditTrail($currentUser, $data)
+    {
         try {
             //prepare user data
             $userInfo = array(
@@ -239,12 +242,335 @@ class Logitini {
 
             if ($httpcode == 200) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
+        } catch (\Exception $e) {
+            return false;
         }
-        catch (\Exception $e) {
+    }
+
+    /**
+     * will create a new currency
+     *
+     * @param $data
+     * @return bool
+     */
+    public function ftra_create_currency($data)
+    {
+        try {
+            //currency prams
+            $currencyName =  isset($data['name']) ? $data['name'] : "";
+            $currencyNameShort =  isset($data['name_short']) ? $data['name_short'] : "";
+
+            $dataToSent = array(
+                'name' => $currencyName,
+                'name_short' => $currencyNameShort,
+            );
+
+            $url = "ftra/bank/create_currency/" . $this->app_key;
+
+            $data_string = $data_string = json_encode($dataToSent);
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            curl_close($ch);
+
+            if ($httpcode == 200) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * will retrieve all FTRA app currencies
+     *
+     * @return bool|mixed
+     */
+    public function ftra_get_currencies()
+    {
+        try {
+            $url = "ftra/bank/currencies/" . $this->app_key;
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * will create a new wallet by email
+     *
+     * @param $email
+     * @return bool
+     */
+    public function ftra_create_wallet($email, $isMaster)
+    {
+        try {
+            //currency prams
+            $dataToSent = array(
+                'email' => $email,
+            );
+
+            $url = "ftra/bank/create_wallet/" . $this->app_key;
+
+            $data_string = $data_string = json_encode($dataToSent);
+        
+            $masterPerm = "false";
+            if ($isMaster) {
+                $masterPerm = "true";
+            }
+
+            $postPeram = array(
+                'master' => $masterPerm,
+            );
+
+            $urlPeram = http_build_query($postPeram);
+
+            $ch = curl_init($this->domain . $url . "?" . $urlPeram);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * will retrieve all wallets or search by one passed
+     *
+     * @return bool|mixed
+     */
+    public function ftra_get_wallet($email = "")
+    {
+        try {
+            $url = "ftra/bank/get_wallets/" . $this->app_key;
+
+            if ($email == "") {
+                $postPeram = array();
+            }
+            else {
+                $postPeram = array(
+                    'email' => $email,
+                );
+            }
+            $urlPeram = http_build_query($postPeram);
+
+            $ch = curl_init($this->domain . $url . "?" . $urlPeram);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * will retrieve wallet summary by id
+     *
+     * @return bool|mixed
+     */
+    public function ftra_get_wallet_summary($walletId)
+    {
+        try {
+            $url = "ftra/bank/wallet_summary/" . $this->app_key . "/" . $walletId;
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+     /**
+     * will create a new wallet by email
+     *
+     * @param $email
+     * @return bool
+     */
+    public function ftra_create_account($walletId, $currencyId)
+    {
+        try {
+            $url = "ftra/bank/create_account/" . $this->app_key . "/" . $walletId . "/" . $currencyId;
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * will post transaction for master wallet
+     *
+     * @param $data
+     * @return bool
+     */
+    public function ftra_master_deposit($data)
+    {
+        try {
+            //currency prams
+            $dataToSent = array(
+                'data' => $data,
+            );
+
+            $url = "ftra/account/master_deposit/" . $this->app_key;
+
+            $data_string = $data_string = json_encode($dataToSent);
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * will post transaction for wallet
+     *
+     * @param $data
+     * @return bool
+     */
+    public function ftra_post_transaction($data)
+    {
+        try {
+            //currency prams
+            $dataToSent = array(
+                'data' => $data,
+            );
+
+            $url = "ftra/account/transaction/" . $this->app_key;
+
+            $data_string = $data_string = json_encode($dataToSent);
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * will retrieve wallet transactions
+     *
+     * @return bool|mixed
+     */
+    public function ftra_get_wallet_transactions($walletId)
+    {
+        try {
+            $url = "ftra/bank/account_posted_transactions/" . $this->app_key . "/" . $walletId;
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
+        } catch (\Exception $e) {
             return false;
         }
     }
