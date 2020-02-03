@@ -7,7 +7,7 @@ namespace Logitini;
  * This is the main class for API integration into Logitini.com
  *
  * These API's include all dashboard integration
- * Version 1.0.0
+ * Version 1.0.4
  *
  *  @author Armon Kolaei
  */
