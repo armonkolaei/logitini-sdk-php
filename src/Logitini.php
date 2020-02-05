@@ -256,7 +256,7 @@ class Logitini
      * @param $data
      * @return bool
      */
-    public function ftra_create_currency($data)
+    public function fintech_create_currency($data)
     {
         try {
             //currency prams
@@ -268,7 +268,7 @@ class Logitini
                 'name_short' => $currencyNameShort,
             );
 
-            $url = "ftra/bank/create_currency/" . $this->app_key;
+            $url = "fintech/bank/create_currency/" . $this->app_key;
 
             $data_string = $data_string = json_encode($dataToSent);
 
@@ -297,14 +297,14 @@ class Logitini
     }
 
     /**
-     * will retrieve all FTRA app currencies
+     * will retrieve all FinTech app currencies
      *
      * @return bool|mixed
      */
-    public function ftra_get_currencies()
+    public function fintech_get_currencies()
     {
         try {
-            $url = "ftra/bank/currencies/" . $this->app_key;
+            $url = "fintech/bank/currencies/" . $this->app_key;
 
             $ch = curl_init($this->domain . $url);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
@@ -331,7 +331,7 @@ class Logitini
      * @param $email
      * @return bool
      */
-    public function ftra_create_wallet($email, $isMaster)
+    public function fintech_create_wallet($email, $isMaster)
     {
         try {
             //currency prams
@@ -339,7 +339,7 @@ class Logitini
                 'email' => $email,
             );
 
-            $url = "ftra/bank/create_wallet/" . $this->app_key;
+            $url = "fintech/bank/create_wallet/" . $this->app_key;
 
             $data_string = $data_string = json_encode($dataToSent);
         
@@ -378,10 +378,10 @@ class Logitini
      *
      * @return bool|mixed
      */
-    public function ftra_get_wallet($email = "")
+    public function fintech_get_wallet($email = "")
     {
         try {
-            $url = "ftra/bank/get_wallets/" . $this->app_key;
+            $url = "fintech/bank/get_wallets/" . $this->app_key;
 
             if ($email == "") {
                 $postPeram = array();
@@ -418,10 +418,10 @@ class Logitini
      *
      * @return bool|mixed
      */
-    public function ftra_get_wallet_summary($walletId)
+    public function fintech_get_wallet_summary($walletId)
     {
         try {
-            $url = "ftra/bank/wallet_summary/" . $this->app_key . "/" . $walletId;
+            $url = "fintech/bank/wallet_summary/" . $this->app_key . "/" . $walletId;
 
             $ch = curl_init($this->domain . $url);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
@@ -448,10 +448,10 @@ class Logitini
      * @param $email
      * @return bool
      */
-    public function ftra_create_account($walletId, $currencyId)
+    public function fintech_create_account($walletId, $currencyId)
     {
         try {
-            $url = "ftra/bank/create_account/" . $this->app_key . "/" . $walletId . "/" . $currencyId;
+            $url = "fintech/bank/create_account/" . $this->app_key . "/" . $walletId . "/" . $currencyId;
 
             $ch = curl_init($this->domain . $url);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -478,7 +478,7 @@ class Logitini
      * @param $data
      * @return bool
      */
-    public function ftra_master_deposit($data)
+    public function fintech_master_deposit($data)
     {
         try {
             //currency prams
@@ -486,7 +486,7 @@ class Logitini
                 'data' => $data,
             );
 
-            $url = "ftra/account/master_deposit/" . $this->app_key;
+            $url = "fintech/account/master_deposit/" . $this->app_key;
 
             $data_string = $data_string = json_encode($dataToSent);
 
@@ -515,7 +515,7 @@ class Logitini
      * @param $data
      * @return bool
      */
-    public function ftra_post_transaction($data)
+    public function fintech_post_transaction($data)
     {
         try {
             //currency prams
@@ -523,7 +523,7 @@ class Logitini
                 'data' => $data,
             );
 
-            $url = "ftra/account/transaction/" . $this->app_key;
+            $url = "fintech/account/transaction/" . $this->app_key;
 
             $data_string = $data_string = json_encode($dataToSent);
 
@@ -551,10 +551,10 @@ class Logitini
      *
      * @return bool|mixed
      */
-    public function ftra_get_wallet_transactions($walletId)
+    public function fintech_get_wallet_transactions($walletId)
     {
         try {
-            $url = "ftra/bank/account_posted_transactions/" . $this->app_key . "/" . $walletId;
+            $url = "fintech/bank/account_posted_transactions/" . $this->app_key . "/" . $walletId;
 
             $ch = curl_init($this->domain . $url);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
