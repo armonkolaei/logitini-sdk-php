@@ -481,14 +481,9 @@ class Logitini
     public function fintech_master_deposit($data)
     {
         try {
-            //currency prams
-            $dataToSent = array(
-                'data' => $data,
-            );
-
             $url = "fintech/account/master_deposit/" . $this->app_key;
 
-            $data_string = $data_string = json_encode($dataToSent);
+            $data_string = $data_string = json_encode($data);
 
             $ch = curl_init($this->domain . $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -518,14 +513,9 @@ class Logitini
     public function fintech_post_transaction($data)
     {
         try {
-            //currency prams
-            $dataToSent = array(
-                'data' => $data,
-            );
-
             $url = "fintech/account/transaction/" . $this->app_key;
 
-            $data_string = $data_string = json_encode($dataToSent);
+            $data_string = $data_string = json_encode($data);
 
             $ch = curl_init($this->domain . $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
