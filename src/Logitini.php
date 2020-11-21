@@ -7,7 +7,7 @@ namespace Logitini;
  * This is the main class for API integration into Logitini.com
  *
  * These API's include all dashboard integration
- * Version 1.0.4
+ * Version 1.0.5
  *
  *  @author Armon Kolaei
  */
@@ -402,6 +402,35 @@ class Logitini
             ));
 
             
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * will retrieve wallet by id
+     *
+     * @return bool|mixed
+     */
+    public function fintech_get_wallet_by_id($walletId)
+    {
+        try {
+            $url = "fintech/bank/wallet/" . $this->app_key . "/" . $walletId;
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
             // close the connection, release resources used
             $server_output = curl_exec($ch);
 
