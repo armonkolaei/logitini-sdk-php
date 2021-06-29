@@ -593,4 +593,56 @@ class Logitini
             return false;
         }
     }
+
+    /**
+     * Service account
+     * will create a new application
+     *
+     * @param $data
+     * @return bool
+     */
+    public function sa_create_application($saSecret, $data)
+    {
+        try {
+            //application prams
+            $appName =  strval(isset($data['name']) ? $data['name'] : "");
+            $appDescription =  strval(isset($data['description']) ? $data['description'] : "");
+            $type =  intval(isset($data['type']) ? $data['type'] : "");
+            $perm_type = intval(isset($data['perm_type']) ? $data['perm_type'] : "");
+            $projectId = intval(isset($data['project_id']) ? $data['project_id'] : 0);
+
+            $dataToSent = array(
+                "name" => $appName,
+                "description" => $appDescription,
+                "type" => $type,
+                "perm_type" => $perm_type
+            );
+
+            $url = "applications/create/" . $projectId . "?sa_secret=" . $saSecret;
+
+            $data_string = $data_string = json_encode($dataToSent);
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            curl_close($ch);
+
+            if ($httpcode == 200) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }
