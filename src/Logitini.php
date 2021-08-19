@@ -598,6 +598,8 @@ class Logitini
      * Service account
      * will create a new application
      *
+     * SA or Service account secret is passed in place of app secret!
+     * 
      * @param $data
      * @return bool
      */
@@ -618,7 +620,7 @@ class Logitini
                 "perm_type" => $perm_type
             );
 
-            $url = "applications/create/" . $projectId . "?sa_secret=" . $saSecret;
+            $url = "sa_applications/create_application/" . $projectId . "?sa_secret=" . $this->app_secret;
 
             $data_string = $data_string = json_encode($dataToSent);
 
