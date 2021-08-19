@@ -603,7 +603,7 @@ class Logitini
      * @param $data
      * @return bool
      */
-    public function sa_create_application($saSecret, $data)
+    public function sa_create_application($data)
     {
         try {
             //application prams
