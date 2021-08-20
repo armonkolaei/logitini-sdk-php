@@ -639,7 +639,7 @@ class Logitini
             curl_close($ch);
 
             if ($httpcode == 200) {
-                return true;
+                return $server_output;
             } else {
                 return false;
             }
