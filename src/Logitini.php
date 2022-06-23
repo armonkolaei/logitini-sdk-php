@@ -342,7 +342,7 @@ class Logitini
             $url = "fintech/bank/create_wallet/" . $this->app_key;
 
             $data_string = $data_string = json_encode($dataToSent);
-        
+
             $masterPerm = "false";
             if ($isMaster) {
                 $masterPerm = "true";
@@ -385,8 +385,7 @@ class Logitini
 
             if ($email == "") {
                 $postPeram = array();
-            }
-            else {
+            } else {
                 $postPeram = array(
                     'email' => $email,
                 );
@@ -401,7 +400,7 @@ class Logitini
                 'app_secret:' . $this->app_secret,
             ));
 
-            
+
             // close the connection, release resources used
             $server_output = curl_exec($ch);
 
@@ -471,7 +470,7 @@ class Logitini
         }
     }
 
-     /**
+    /**
      * will create a new wallet by email
      *
      * @param $email
@@ -643,6 +642,35 @@ class Logitini
             } else {
                 return false;
             }
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * will retrieve account by id
+     *
+     * @return bool|mixed
+     */
+    public function fintech_get_account_summary($accountId)
+    {
+        try {
+            $url = "fintech/bank/get_account/" . $this->app_key . "/" . $accountId;
+
+            $ch = curl_init($this->domain . $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'app_secret:' . $this->app_secret,
+            ));
+
+            // close the connection, release resources used
+            $server_output = curl_exec($ch);
+
+            curl_close($ch);
+
+            return json_decode($server_output);
         } catch (\Exception $e) {
             return false;
         }
